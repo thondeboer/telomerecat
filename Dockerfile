@@ -1,4 +1,4 @@
-FROM ubuntu:20.04 as builder
+FROM ubuntu:22.04 as builder
 USER root
 
 # Version of tools that are going to be installed.
@@ -7,14 +7,14 @@ ARG BRANCH_OR_TAG_PARABAM="3.0.1"
 
 RUN apt-get -yq update
 RUN apt-get install -yq --no-install-recommends \
-locales \
-g++ \
-make \
-gcc \
-pkg-config \
-python3 python3-dev python3-pip python3-setuptools \
-zlib1g-dev libbz2-dev liblzma-dev libcurl4-gnutls-dev \
-curl
+      locales \
+      g++ \
+      make \
+      gcc \
+      pkg-config \
+      python3 python3-dev python3-pip python3-setuptools \
+      zlib1g-dev libbz2-dev liblzma-dev libcurl4-gnutls-dev \
+      curl
 # zlib1g-dev libbz2-dev liblzma-dev libcurl4-gnutls-dev are for building pysam
 
 ENV CGP_OPT /opt/wtsi-cgp
@@ -29,9 +29,9 @@ ENV LANG en_US.UTF-8
 RUN pip3 install wheel cython
 
 RUN curl -sSL https://github.com/cancerit/parabam/archive/${BRANCH_OR_TAG_PARABAM}.tar.gz | tar zx \
-&& cd parabam* \
-&& python3 setup.py sdist \
-&& python3 setup.py install --prefix=$CGP_OPT
+      && cd parabam* \
+      && python3 setup.py sdist \
+      && python3 setup.py install --prefix=$CGP_OPT
 
 # build the tools in this repo, separate to reduce build time on errors
 COPY setup.py .
@@ -40,7 +40,7 @@ COPY telomerecat telomerecat
 COPY README.md .
 RUN python3 setup.py install --prefix=$CGP_OPT
 
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 LABEL maintainer="cgphelp@sanger.ac.uk" \
       uk.ac.sanger.cgp="Cancer, Ageing and Somatic Mutation, Wellcome Trust Sanger Institute" \
@@ -48,16 +48,16 @@ LABEL maintainer="cgphelp@sanger.ac.uk" \
 
 RUN apt-get -yq update
 RUN apt-get install -yq --no-install-recommends \
-apt-transport-https \
-locales \
-ca-certificates \
-time \
-unattended-upgrades \
-python3 python3-pkg-resources \
-zlib1g-dev libbz2-dev liblzma-dev libcurl4-gnutls-dev && \
-unattended-upgrade -d -v && \
-apt-get remove -yq unattended-upgrades && \
-apt-get autoremove -yq
+      apt-transport-https \
+      locales \
+      ca-certificates \
+      time \
+      unattended-upgrades \
+      python3 python3-pkg-resources \
+      zlib1g-dev libbz2-dev liblzma-dev libcurl4-gnutls-dev && \
+      unattended-upgrade -d -v && \
+      apt-get remove -yq unattended-upgrades && \
+      apt-get autoremove -yq
 
 RUN locale-gen en_US.UTF-8
 RUN update-locale LANG=en_US.UTF-8
