@@ -1,0 +1,7 @@
+version: '3'
+services:
+  telomerecat:
+    build: .
+    image: ghcr.io/thondeboer/telomerecat:4.0.3
+# echo $GITHUB_TOKEN | docker login ghcr.io -u thondeboer --password-stdin
+# docker push ghcr.io/thondeboer/telomerecat:4.0.3
