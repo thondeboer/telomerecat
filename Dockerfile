@@ -18,7 +18,7 @@ RUN apt-get install -yq --no-install-recommends \
 # zlib1g-dev libbz2-dev liblzma-dev libcurl4-gnutls-dev are for building pysam
 
 ENV CGP_OPT /opt/wtsi-cgp
-ENV PYTHONPATH $CGP_OPT/lib/python3.8/site-packages
+ENV PYTHONPATH $CGP_OPT/lib/python3.10/site-packages
 RUN mkdir -p $PYTHONPATH
 
 RUN locale-gen en_US.UTF-8
